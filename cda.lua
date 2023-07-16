@@ -27,3 +27,5 @@ mt.__namecall = function(this, ...)
 
     return namecall(this, table.unpack(args))
 end
+
+setreadonly(mt, true)
