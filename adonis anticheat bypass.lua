@@ -1,5 +1,5 @@
 for i,v in pairs(getgc(true)) do
-    if type(v) == "table" and rawget(v, 'Detected') then
+    if type(v) == 'table' and rawget(v, 'Detected') then
         local f = rawget(v, 'Detected')
 
         if typeof(f) == 'function' and islclosure(f) then
