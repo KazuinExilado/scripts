@@ -14,11 +14,11 @@ for i,v in pairs(getgc(true)) do
 		and rawget(v, 'Function')
 		and rawget(v, 'FireServer')
 		and rawget(v, 'Events') then
-        adonisremote = rawget(v, 'Object')
+       		adonisremote = rawget(v, 'Object')
 	end
 end
 
-hookfunction(detectfunc, function(...)
+hook(detectfunc, function(...)
 	local args = {...}
 	if args[1] == '_' and args[2] == '_' and args[3] == true then
 		return true
