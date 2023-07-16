@@ -1,6 +1,7 @@
 --bypass no anti-cheat do adonis
 local adonisremote
 local detectfunc
+local hook = hookfunction or replaceclosure
 
 for i,v in pairs(getgc(true)) do
 	if type(v) == 'table' and rawget(v, 'Detected') then
@@ -28,7 +29,6 @@ end)
 --bypass no anti-cheat do cda
 local mt = getrawmetatable(game)
 local namecall = mt.__namecall
-local hook = hookfunction or replaceclosure
 setreadonly(mt, false)
 
 function infiniteyield(this, ...)
