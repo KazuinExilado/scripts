@@ -1,45 +1,60 @@
---bypass no anti-cheat do adonis
-local adonisremote
-local detectfunc
-local hook = hookfunction or replaceclosure
+local Encrypt
+local Remote
+local eventData
+local client
+local Core
 
-for i,v in pairs(getgc(true)) do
-	if type(v) == 'table' and rawget(v, 'Detected') then
-		local f = rawget(v, 'Detected')
+local AdonisRemote
 
-		if typeof(f) == 'function' and islclosure(f) then
-			detectfunc = f
-		end
-	elseif type(v) == 'table' and rawget(v, 'Object')
-		and rawget(v, 'Function')
-		and rawget(v, 'FireServer')
-		and rawget(v, 'Events') then
-       		adonisremote = rawget(v, 'Object')
-	end
-end
-
-hook(detectfunc, function(...)
-	local args = {...}
-	if args[1] == '_' and args[2] == '_' and args[3] == true then
-		return true
-	end
-	return false
-end)
-
---bypass no anti-cheat do cda
 local mt = getrawmetatable(game)
 local namecall = mt.__namecall
 setreadonly(mt, false)
 
-function infiniteyield(this, ...)
-	return wait(9e9)
+for i, v in pairs(getnilinstances()) do
+	if v:IsA'RemoteEvent' then
+        local a
+        local b
+
+		a = hookfunction(v.FireServer, function(...)
+            if checkcaller() then
+                return a(...)
+            end
+            return wait(9e9)
+        end)
+
+		b = hookfunction(v.fireServer, function(...)
+            if checkcaller() then
+                return b(...)
+            end
+            return wait(9e9)
+        end)
+	end
 end
 
-for i, v in pairs(getnilinstances()) do
-	if v:IsA'RemoteEvent' and v ~= adonisremote then
-		hook(v.FireServer, infiniteyield)
-		hook(v.fireServer, infiniteyield)
-	end
+for i, v in pairs(getgc(true)) do
+    if type(v) == 'table' and rawget(v, 'Detected') then
+        local f = rawget(v, 'Detected')
+        if typeof(f) == 'function' and islclosure(f) then
+            hookfunction(f, function(...)
+                local args = {...}
+                if args[1] == '_' and args[2] == '_' and args[3] == true then
+                    return true
+                end
+                return false
+            end)
+        end
+    elseif type(v) == 'table' and rawget(v, 'Encrypt') then
+        if type(rawget(v, 'Encrypt')) == 'function' and islclosure(rawget(v, 'Encrypt')) then
+            Remote = v
+        end
+    elseif type(v) == 'table' and rawget(v, 'DepsName') and rawget(v, 'RemoteName') then
+        client = v
+    elseif type(v) == 'table' and rawget(v, 'LastUpdate') and rawget(v, 'LoadCode') then
+        Core = v
+    elseif type(v) == 'table' and rawget(v, 'Object') and rawget(v, 'Function') and rawget(v, 'FireServer') and
+        rawget(v, 'Events') then
+        eventData = v
+    end
 end
 
 mt.__namecall = function(this, ...)
@@ -51,5 +66,42 @@ mt.__namecall = function(this, ...)
 
 	return namecall(this, table.unpack(args))
 end
+AdonisRemote = game:GetService'ReplicatedStorage':FindFirstChild('__FUNCTION', true).Parent
+Encrypt = rawget(Remote, 'Encrypt')
+
+local old_fireServer
+local old_FireServer
+
+old_fireServer = hookfunction(AdonisRemote.fireServer, function(...)
+    if checkcaller() then
+        return old_fireServer(...)
+    end
+    return wait(9e9)
+end)
+
+old_FireServer = hookfunction(AdonisRemote.FireServer, function(...)
+    if checkcaller() then
+        return old_FireServer(...)
+    end
+    return wait(9e9)
+end)
 
 setreadonly(mt, true)
+
+task.spawn(function()
+    while true do
+        --Core.LastUpdate = os.time()
+        --vai tarantula goza
+        AdonisRemote:FireServer({
+            Mode = "Fire",
+            Module = client.Module,
+            Loader = client.Loader,
+            Sent = Remote.Sent,
+            Received = Remote.Received
+        }, Encrypt("ClientCheck", Core.Key), {
+            Sent = Remote.Sent or 0,
+            Received = Remote.Received
+        }, client.DepsName)
+        task.wait '10'
+    end
+end)
