@@ -1,3 +1,6 @@
+if getgenv().tarantulaveia then return end
+getgenv().tarantulaveia = true
+
 local Encrypt
 local Remote
 local eventData
