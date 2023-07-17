@@ -3,11 +3,14 @@ local Remote
 local eventData
 local client
 local Core
+local old_fireServer
+local old_FireServer
 
-local AdonisRemote
+local AdonisRemote = game:GetService'ReplicatedStorage':FindFirstChild('__FUNCTION', true).Parent
 
 local mt = getrawmetatable(game)
 local namecall = mt.__namecall
+
 setreadonly(mt, false)
 
 for i, v in pairs(getnilinstances()) do
@@ -15,14 +18,14 @@ for i, v in pairs(getnilinstances()) do
         local a
         local b
 
-		a = hookfunction(v.FireServer, function(...)
+	a = hookfunction(v.FireServer, function(...)
             if checkcaller() then
                 return a(...)
             end
             return wait(9e9)
         end)
 
-		b = hookfunction(v.fireServer, function(...)
+	b = hookfunction(v.fireServer, function(...)
             if checkcaller() then
                 return b(...)
             end
@@ -66,11 +69,8 @@ mt.__namecall = function(this, ...)
 
 	return namecall(this, table.unpack(args))
 end
-AdonisRemote = game:GetService'ReplicatedStorage':FindFirstChild('__FUNCTION', true).Parent
-Encrypt = rawget(Remote, 'Encrypt')
 
-local old_fireServer
-local old_FireServer
+Encrypt = rawget(Remote, 'Encrypt')
 
 old_fireServer = hookfunction(AdonisRemote.fireServer, function(...)
     if checkcaller() then
