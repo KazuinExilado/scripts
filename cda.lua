@@ -1,3 +1,5 @@
+print'provavelmente trocaram de anti-cheat'
+--[[
 if getgenv().tarantulaveia then return end
 getgenv().tarantulaveia = true
 
@@ -18,22 +20,22 @@ setreadonly(mt, false)
 
 for i, v in pairs(getnilinstances()) do
 	if v:IsA'RemoteEvent' then
-        local a
-        local b
+            local a
+            local b
 
-	a = hookfunction(v.FireServer, function(...)
-            if checkcaller() then
-                return a(...)
-            end
-            return wait(9e9)
-        end)
+	    a = hookfunction(v.FireServer, function(...)
+                if checkcaller() then
+                    return a(...)
+                end
+                return wait(9e9)
+            end)
 
-	b = hookfunction(v.fireServer, function(...)
-            if checkcaller() then
-                return b(...)
-            end
-            return wait(9e9)
-        end)
+	    b = hookfunction(v.fireServer, function(...)
+                if checkcaller() then
+                    return b(...)
+                end
+                return wait(9e9)
+            end)
 	end
 end
 
@@ -108,3 +110,5 @@ task.spawn(function()
         task.wait '10'
     end
 end)
+
+]]
