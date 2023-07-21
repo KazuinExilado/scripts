@@ -1,41 +1,45 @@
-print'provavelmente trocaram de anti-cheat'
---[[
 if getgenv().tarantulaveia then return end
 getgenv().tarantulaveia = true
 
+for i, v in pairs(getsenv(game:GetService'Chat':WaitForChild'ChatService')) do
+    if type(v) == 'function' and islclosure(v) then
+        hookfunction(v, function()
+            return wait(9e9)
+        end)
+    end
+end
+
+--[[
 local Encrypt
 local Remote
 local eventData
 local client
 local Core
-local old_fireServer
-local old_FireServer
 
-local AdonisRemote = game:GetService'ReplicatedStorage':FindFirstChild('__FUNCTION', true).Parent
+local AdonisRemote
 
 local mt = getrawmetatable(game)
 local namecall = mt.__namecall
-
 setreadonly(mt, false)
 
 for i, v in pairs(getnilinstances()) do
 	if v:IsA'RemoteEvent' then
-            local a
-            local b
+        local a
+        local b
 
-	    a = hookfunction(v.FireServer, function(...)
-                if checkcaller() then
-                    return a(...)
-                end
-                return wait(9e9)
-            end)
+		a = hookfunction(v.FireServer, function(...)
+            if checkcaller() then
+                return a(...)
+            end
+            return wait(9e9)
+        end)
 
-	    b = hookfunction(v.fireServer, function(...)
-                if checkcaller() then
-                    return b(...)
-                end
-                return wait(9e9)
-            end)
+		b = hookfunction(v.fireServer, function(...)
+            if checkcaller() then
+                return b(...)
+            end
+            return wait(9e9)
+        end)
 	end
 end
 
@@ -74,8 +78,11 @@ mt.__namecall = function(this, ...)
 
 	return namecall(this, table.unpack(args))
 end
-
+AdonisRemote = game:GetService'ReplicatedStorage':FindFirstChild('__FUNCTION', true).Parent
 Encrypt = rawget(Remote, 'Encrypt')
+
+local old_fireServer
+local old_FireServer
 
 old_fireServer = hookfunction(AdonisRemote.fireServer, function(...)
     if checkcaller() then
@@ -110,5 +117,4 @@ task.spawn(function()
         task.wait '10'
     end
 end)
-
 ]]
