@@ -12,13 +12,5 @@ for i,v in pairs(getgc(true)) do
                 return false
             end)
         end
-    elseif type(v) == 'table' and rawget(v, 'newindexInstance') then
-        for tarantulaveia, b in pairs(v) do
-            if typeof(b) == 'table' then
-                if b[2] and typeof(b[2]) == 'function' then
-                   hookfunction(rawget(v, tarantulaveia)[2], function(...) return true end)
-                end
-            end
-        end
     end
 end
